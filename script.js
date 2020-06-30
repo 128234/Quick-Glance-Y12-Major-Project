@@ -260,14 +260,17 @@ var wedPeriodTimesArr = [
 
 function makeManualTimetableInput(timetableName, timetableWeek) {
   //This function makes the timetable for the user to point and click their class periods
-
-//TODO CHANGE THIS FROM A CAPTION TO A H3 ROW
   var table = document.getElementById(timetableName);
-  var caption = table.createCaption();
-  caption.innerText = "Timetable - Week " + timetableWeek;
+  
+  //Adds title labelling which week it is
+  var row = table.insertRow(-1);
+  var week = document.createElement("H3");
+  week.style.textAlign = "center";
+  week.innerText = "Timetable - Week " + timetableWeek;
+  row.appendChild(week);
 
   //Deleting existing table rows
-  while (table.rows.length > 0) {
+  while (table.rows.length > 1) {
     table.deleteRow(0);
   }
 
@@ -380,7 +383,7 @@ function saveManualTimetable() {
   );
   if (confBool) {
     var table = document.getElementById("weekInputTimetable");
-    var numColumns = table.rows[0].cells.length; //gets the number of columns in the table
+    var numColumns = table.rows[1].cells.length; //gets the number of columns in the table
     var rowNumberPeriodArr = [
       "P1",
       "P2",
@@ -393,12 +396,12 @@ function saveManualTimetable() {
     ]; //array to find index of period in table
 
     for (var c = 0; c < numColumns; c++) {
-      var dayName = table.rows[0].cells[c].innerText;
+      var dayName = table.rows[1].cells[c].innerText;
       var daySchedule = [];
       //Loop to locate which periods are free periodds
-      for (var r = 2; r < table.rows.length; r += 2) {
+      for (var r = 3; r < table.rows.length; r += 2) {
         subjectName = table.rows[r].cells[c].childNodes[0].innerText;
-        var periodNumber = rowNumberPeriodArr[r / 2 - 1]; //links row number in table to period number in array
+        var periodNumber = rowNumberPeriodArr[(r - 3)/ 2]; //links row number in table to period number in array
         if (subjectName !== "Free Period") {
           //returns the relevant teacher and room to a given class name and save details to a daily array
           daySchedule.push(getClassDetailsfromArr(subjectName, periodNumber));
@@ -410,19 +413,23 @@ function saveManualTimetable() {
         schedule: daySchedule
       };
 
+      var tableHeading = table.rows[0].childNodes[0].innerText;
       //Determines which week of data was entered and which array to save it to
-      if (table.caption.innerText.includes("A")) {
+      if (tableHeading.includes("A")) {
         weekATimetable.push(dayScheduleObj);
       } else {
         weekBTimetable.push(dayScheduleObj);
       }
     }
+
+
     //Determines which week of data was entered and what are the next steps
-    if (table.caption.innerText.includes("A")) {
-      console.log(weekATimetable);
+    tableHeading = table.rows[0].childNodes[0].innerText;
+    if (tableHeading.includes("A")) {
+      console.log(weekATimetable); //TODO REMOVE CONSOLE.LOG
       makeManualTimetableInput("weekInputTimetable", "B");
     } else {
-      console.log(weekBTimetable);
+      console.log(weekBTimetable); //TODO REMOVE CONSOLE.LOG
       goToPage(page4); //Go to full timetable edit screen
       makeFullTimetableScreen("fullEditTimetable");
     }
@@ -546,7 +553,7 @@ function makeFullTimetableScreen(timetableName) {
   for (var w = 0; w < weeks.length; w++) {
     //Creates the week header
     var row = table.insertRow(-1);
-    var week = document.createElement("H3"); //or TH in originally
+    var week = document.createElement("H3");
     week.style.textAlign = "center";
     week.innerText = "Timetable - Week " + weeks[w];
     row.appendChild(week);
