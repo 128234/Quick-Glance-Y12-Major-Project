@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Glance Timetable</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="initialise()">
+  <!--Page 1: buttons for either manual entry or importing from spaces -->
+  <div id='page1' class='pages' style="display: none;">
+    <p>Enter your timetable using the following methods:</p>
+    <button onclick="makeClasses()" id="manualEntryBtn">Manual Entry</button>
+    <button onclick="goToPage(pageA)">Import from Spaces</button>
+  </div>
+
+  <!--Page 2: user manually enters details of each subject-->
+  <div id='page2' class='pages' style="display: none;">
+    <p>Please fill out the table with the details of each of your subjects</p>
+    <p>Note: The 'Main Classroom' and 'Teacher' columns may be left empty</p>
+    <hr>
+    <table id="subjectInputTable">
+    </table>
+    <button onclick="addClassTableRow()" id="addClassBtn">Add Class</button>
+    <button onclick="deleteTableRow()" id="removeClassBtn">Remove Classes</button>
+    <br><br>
+    <button onclick="confirmDeletion('page2')">Back</button>
+    <button onclick="saveClassesDetails()" id="saveClassesBtn">Save Classes</button>
+  </div>
+
+  <!--Page 3: user selects position of subjects in week A-->
+  <div id='page3' class='pages' style="display: none;">
+    <p>This screen is an easy method to enter your timetable</p>
+    <div class="flex-container">
+      <table id="weekInputTimetable">
+      </table>
+      <form id="subjectList">
+      </form>
+    </div>
+
+    <button onclick="saveManualTimetable()">Save Week</button>
+  </div>
+
+  <!--Page 4: 1st full timetable edit screen-->
+  <div id='page4' class='pages' style="display: none;">
+    <table id="fullEditTimetable">
+    </table>
+    <button onclick="saveUpdTimetable('fullEditTimetable')" id="">Save Timetable</button>
+  </div>
+
+  <!--Page A: user pastes timetable from spaces-->
+  <div id='pageA' class='pages' style="display: none;">
+    <p>Copy your timetable from the Newington Spaces Timetable tab and paste it here</p>
+    <textarea id="myTextarea" cols="30" rows="10"></textarea>
+    <br><br>
+    <button onclick="confirmDeletion('pageA')">Back</button>
+    <button onclick="importClasses()" id="importClassBtn">Import Spaces</button>
+  </div>
+
+  <!--Page 5: user sees countdown and timetable-->
+  <div id='page5' class='pages' style="display: none;">
+    <p id='timer'></p>
+    <p id='periodDtls'></p>
+    <br>
+    <button onclick="startUpdateTimetableProcess()">Edit Timetable</button>
+    <button onclick='setUpSearch()'>Search for class</button>
+  </div>
+
+  <!--Page 6: 2nd full timetable edit screen-->
+  <div id='page6' class='pages' style="display: none;">
+    <table id="updatedTimetable">
+    </table>
+    <button onclick='deleteTimetableData()'>Delete Timetable</button>
+    <button onclick="endUpdateTimetableProcess()" id="">Save Timetable</button>
+  </div>
+
+  <!--Page 7: Search timetable screen-->
+  <div id='page7' class='pages' style="display: none;">
+    <label for="subjectsDropDown">Subject:</label>
+    <select name="Subject" id="subjectsDropDown" onchange="createQueryTable('subjectsDropDown')">
+      <option>-</option>
+    </select>
+    <label for="teachersDropDown">Teacher:</label>
+    <select name="Teacher" id="teachersDropDown" onchange="createQueryTable('teachersDropDown')">
+      <option>-</option>
+    </select>
+    <label for="roomsDropDown">Room:</label>
+    <select name="Room" id="roomsDropDown" onchange="createQueryTable('roomsDropDown')">
+      <option>-</option>
+    </select>
+    <br><br>
+    <table id="queryResultsTable">
+      <tbody>
+        <tr>
+          <th>Week</th>
+          <th>Day</th>
+          <th>Period</th>
+          <th>Subject</th>
+          <th>Room</th>
+          <th>Teacher</th>
+        </tr>
+      </tbody>
+    </table>
+
+    <button onclick='resetQueryPage()'>Back</button>
+
+  </div>
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+body {
+  background-color: white;
+  background-color: #353535;
+  background-color: dimgrey;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+#subjectList {
+  margin: 0 auto;
+}
