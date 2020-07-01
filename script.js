@@ -151,16 +151,23 @@ function saveClassesDetails() {
     "Are you sure you want to continue?\nNote: Any changes after saving can be made in the final edit screen"
   );
   if (confBool) {
+    //Hides 'delete check boxes' if they are visible
+    if (isCheckBoxVisibleVar) {
+      isCheckBoxVisibleVar = false;
+      hideSelectBoxes("subjectInputTable");
+    }
+
     var table = document.getElementById("subjectInputTable");
     var inputErrors = insertionSort(findSubjectNameErrors(table));
     //Checks if error with data before continuing
     if (inputErrors.length != 0) {
       highlightErrorCells(table, inputErrors);
       alert(
-        "An error is present in the highlighted cells. Please fix these cells before continuing."
+        "The highlighted cells contain an error. Please fix these errors before continuing."
       );
       return;
     }
+    allClassesDetails = [];
     //Saves each row as an object, as an element in a global array
     for (var i = 1; i < table.rows.length; i++) {
       userClassDetailsObj = {
@@ -172,10 +179,10 @@ function saveClassesDetails() {
     }
     //Setting up the displaying of the information on the following page
     goToPage(page3);
-    makeManualTimetableInput("weekInputTimetable", "A");
+    makeManualTimetableInput("weekAInputTimetable", "A");
 
     //Makes a list of all the user's subjects so the full timetable can be filled out easily
-    makeSubjectList("subjectList");
+    makeSubjectList("weekASubjectList");
   }
 }
 
@@ -313,11 +320,11 @@ function makeManualTimetableInput(timetableName, timetableWeek) {
 
 function changeSubject(btn) {
   //This function changes the text on the button to that of the chosen subject
-  if (btn.innerText === chosenSubject) {
+  if (btn.innerText === chosenSubject.slice(0,-1)) {
     btn.innerText = "Free Period";
     btn.style.borderColor = "";
   } else {
-    btn.innerText = chosenSubject;
+    btn.innerText = chosenSubject.slice(0,-1);
     btn.style.borderColor = "dodgerblue";
   }
 }
@@ -325,30 +332,39 @@ function changeSubject(btn) {
 function makeSubjectList(timetableName) {
   //This function makes a list of all the user's subjects
   var form = document.getElementById(timetableName);
-  for (i = allClassesDetails.length - 1; i >= 0; i--) {
+
+  var week = timetableName.substr(4,1);
+
+  for (var i = form.childNodes.length - 1; i > 2; i--) {
+    form.removeChild(form.childNodes[i]); 
+  }
+
+  for (var i = allClassesDetails.length - 1; i >= 0; i--) {
     var subjectName = allClassesDetails[i].subjectName;
 
     //Setting the various properties of each element
     var input = document.createElement("input");
     input.setAttribute("type", "radio");
     input.setAttribute("name", "selectedSubject");
-    input.setAttribute("value", subjectName);
+    input.setAttribute("value", subjectName + week);
     input.onclick = function () {
       storeChosenSubject(this);
     };
+
     //Pre-selecting the first radio button
     input.checked = true;
-    chosenSubject = subjectName;
+    chosenSubject = subjectName + week;
 
     //Adding the subjectlist to the html
     var label = document.createElement("label");
     label.innerText = subjectName;
     var br = document.createElement("br");
 
-    form.insertBefore(br, form.childNodes[0]);
-    form.insertBefore(label, form.childNodes[0]);
-    form.insertBefore(input, form.childNodes[0]);
+    form.insertBefore(br, form.childNodes[3]);
+    form.insertBefore(label, form.childNodes[3]);
+    form.insertBefore(input, form.childNodes[3]);
   }
+
 }
 
 var chosenSubject = ""; //global variable of the user's selected subject in manual entry
@@ -356,16 +372,18 @@ var chosenSubject = ""; //global variable of the user's selected subject in manu
 function storeChosenSubject(btn) {
   //This function sets the chosenSubject var as the value chosen
   chosenSubject = btn.value;
-  highlightSubjectBtns();
+  var week = chosenSubject.slice(-1);
+  highlightSubjectBtns(week);
 }
 
-function highlightSubjectBtns() {
+function highlightSubjectBtns(week) {
   //This function highlights blue all cells containing the given subject
-  var table = document.getElementById("weekInputTimetable");
-  for (var r = 2; r < table.rows.length; r += 2) {
+
+  var table = document.getElementById("week" + week + "InputTimetable");
+  for (var r = 3; r < table.rows.length; r += 2) {
     for (var c = 0; c < table.rows[r].cells.length; c++) {
       var btn = table.rows[r].cells[c].childNodes[0];
-      if (btn.innerText === chosenSubject) {
+      if (btn.innerText + week === chosenSubject) {
         btn.style.borderColor = "dodgerblue";
       } else {
         btn.style.borderColor = "";
@@ -374,7 +392,7 @@ function highlightSubjectBtns() {
   }
 }
 
-function saveManualTimetable() {
+function saveManualTimetable(tableName) {
   //This function saves the details from the manualy inputted table
 
   //Confirmation to the user before continuing
@@ -382,9 +400,9 @@ function saveManualTimetable() {
     "Are you sure you want to continue?\nNote: Any changes after saving can be made in the final edit screen"
   );
   if (confBool) {
-    var table = document.getElementById("weekInputTimetable");
+    var table = document.getElementById(tableName);
     var numColumns = table.rows[1].cells.length; //gets the number of columns in the table
-    var rowNumberPeriodArr = [
+    var normalRowNumberPeriodArr = [
       "P1",
       "P2",
       "PB",
@@ -394,11 +412,30 @@ function saveManualTimetable() {
       "P5",
       "P6"
     ]; //array to find index of period in table
+    var wedRowNumberPeriodArr = [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "PB",
+      "Lunch",
+      "P5",
+      "P6"
+    ]; //array to find index of period in table for Wednesday
+
 
     for (var c = 0; c < numColumns; c++) {
       var dayName = table.rows[1].cells[c].innerText;
       var daySchedule = [];
-      //Loop to locate which periods are free periodds
+      if (c == 2) {
+        //Case if row is for Wednesday
+        var rowNumberPeriodArr = wedRowNumberPeriodArr;
+      } else {
+        //Case for all other days of the week
+        var rowNumberPeriodArr = normalRowNumberPeriodArr;
+      }
+
+      //Loop to locate which periods are free periods
       for (var r = 3; r < table.rows.length; r += 2) {
         subjectName = table.rows[r].cells[c].childNodes[0].innerText;
         var periodNumber = rowNumberPeriodArr[(r - 3)/ 2]; //links row number in table to period number in array
@@ -413,21 +450,22 @@ function saveManualTimetable() {
         schedule: daySchedule
       };
 
-      var tableHeading = table.rows[0].childNodes[0].innerText;
       //Determines which week of data was entered and which array to save it to
-      if (tableHeading.includes("A")) {
-        weekATimetable.push(dayScheduleObj);
+      if (tableName.includes("A")) {
+        weekATimetable[c] = dayScheduleObj;
       } else {
-        weekBTimetable.push(dayScheduleObj);
+        weekBTimetable[c] = dayScheduleObj;
       }
     }
 
 
     //Determines which week of data was entered and what are the next steps
-    tableHeading = table.rows[0].childNodes[0].innerText;
-    if (tableHeading.includes("A")) {
+    //tableHeading = table.rows[0].childNodes[0].innerText; //TODO DELETE LINE
+    if (tableName.includes("A")) {
       console.log(weekATimetable); //TODO REMOVE CONSOLE.LOG
-      makeManualTimetableInput("weekInputTimetable", "B");
+      goToPage(pageB)
+      makeManualTimetableInput("weekBInputTimetable", "B");
+      makeSubjectList("weekBSubjectList");
     } else {
       console.log(weekBTimetable); //TODO REMOVE CONSOLE.LOG
       goToPage(page4); //Go to full timetable edit screen
@@ -747,7 +785,7 @@ function periodLinearSearch(requiredName, array) {
 
 function getWeekNumber(currentDate) {
   //This function returns the  week number for today's date
-  /*This function is modified from a function by Rob G (https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php)*/
+  /*This function is slighty modified from the function by Rob G (https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php)*/
 
   // A copy of the date to not modify the original
   currentDate = new Date(
@@ -917,8 +955,8 @@ function countdown() {
     timerLoop = setTimeout(countdown, 500); //run countdown timer loop
   }
 }
-
-var holidayWeeksArr = [1, 2, 3, 4, 16, 17, 27, 28, 29, 40, 41, 50, 51, 52, 53]; //array of all weeks which are holidays
+//TODO CHANGE 26 TO 27
+var holidayWeeksArr = [1, 2, 3, 4, 16, 17, 26, 28, 29, 40, 41, 50, 51, 52, 53]; //array of all weeks which are holidays
 function findIfHoliday() {
   //This function checks if the current day is a school holiday
   var currentDate = new Date();
@@ -1088,19 +1126,21 @@ function periodBinarySearch(requiredName, sortedArray) {
   var foundIt = false;
   var posFound = -1;
 
-  do {
-    var middle = Math.floor((lower + upper) / 2);
-    if (requiredName == sortedArray[middle].period) {
-      foundIt = true;
-      posFound = middle;
-    } else {
-      if (requiredName < sortedArray[middle].period) {
-        upper = middle - 1;
+  if (sortedArray.length > 0) {
+    do {
+      var middle = Math.floor((lower + upper) / 2);
+      if (requiredName == sortedArray[middle].period) {
+        foundIt = true;
+        posFound = middle;
       } else {
-        lower = middle + 1;
+        if (requiredName < sortedArray[middle].period) {
+          upper = middle - 1;
+        } else {
+          lower = middle + 1;
+        }
       }
-    }
-  } while (!foundIt && lower <= upper);
+    } while (!foundIt && lower <= upper);
+  }
 
   return posFound;
 }
@@ -1118,11 +1158,22 @@ function startUpdateTimetableProcess() {
   }
 }
 
-function endUpdateTimetableProcess() {
+function endUpdateTimetableProcess(saveChanges) {
   //This function ends the update timetable process
 
   document.getElementById("periodDtls").innerText = ""; //resets countdown details so it will be updated
+  
+  //saveChanges is a flag to signify if the changes made are to be saved
+  if (saveChanges) {
   saveUpdTimetable("updatedTimetable");
+  } else {
+    var confBool = confirm('Are you sure you want to exit?\nNote: All changes made will be lost');
+    if (confBool) {
+      goToPage(page5);
+      resetPage("page6");
+      countdown();
+    }
+  }
 }
 
 function deleteTimetableData() {

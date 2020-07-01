@@ -35,19 +35,36 @@
   <div id='page3' class='pages' style="display: none;">
     <p>This screen is an easy method to enter your timetable</p>
     <div class="flex-container">
-      <table id="weekInputTimetable">
+      <table id="weekAInputTimetable">
       </table>
-      <form id="subjectList">
+      
+      <form id="weekASubjectList">
+        <p>Subject List:</p>
       </form>
     </div>
+    <button onclick="goToPage(page2)">Back</button>
+    <button onclick="saveManualTimetable('weekAInputTimetable')">Save Week A</button>
+  </div>
 
-    <button onclick="saveManualTimetable()">Save Week</button>
+  <!--Page B: user selects position of subjects in week B-->
+  <div id='pageB' class='pages' style="display: none;">
+    <p>This screen is an easy method to enter your timetable</p>
+    <div class="flex-container">
+      <table id="weekBInputTimetable">
+      </table>
+      <form id="weekBSubjectList">
+        <p>Subject List:</p>
+      </form>
+    </div>
+    <button onclick='goToPage(page3)'>Back</button>
+    <button onclick="saveManualTimetable('weekBInputTimetable')">Save Week B</button>
   </div>
 
   <!--Page 4: 1st full timetable edit screen-->
   <div id='page4' class='pages' style="display: none;">
     <table id="fullEditTimetable">
     </table>
+    <button onclick="deleteTimetableData()">Return to Start</button>
     <button onclick="saveUpdTimetable('fullEditTimetable')" id="">Save Timetable</button>
   </div>
 
@@ -73,8 +90,9 @@
   <div id='page6' class='pages' style="display: none;">
     <table id="updatedTimetable">
     </table>
+    <button onclick='endUpdateTimetableProcess(false)'>Back</button>
     <button onclick='deleteTimetableData()'>Delete Timetable</button>
-    <button onclick="endUpdateTimetableProcess()" id="">Save Timetable</button>
+    <button onclick="endUpdateTimetableProcess(true)" id="">Save Timetable</button>
   </div>
 
   <!--Page 7: Search timetable screen-->
