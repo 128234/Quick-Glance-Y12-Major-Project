@@ -14,11 +14,11 @@
   <div id='page1' class='pages' style="display: none;">
     <p>Enter your timetable using the following methods:</p>
     <button onclick="makeClasses()" id="manualEntryBtn">Manual Entry</button>
-    <button onclick="goToPage(pageA)">Import from Spaces</button>
+    <button onclick="goToPage(page3)">Import from Spaces</button>
   </div>
 
-  <!--Page 2: user manually enters details of each subject-->
-  <div id='page2' class='pages' style="display: none;">
+  <!--Page 2a: user manually enters details of each subject-->
+  <div id='page2a' class='pages' style="display: none;">
     <p>Please fill out the table with the details of each of your subjects</p>
     <p>Note: The 'Main Classroom' and 'Teacher' columns may be left empty</p>
     <hr>
@@ -27,12 +27,21 @@
     <button onclick="addClassTableRow()" id="addClassBtn">Add Class</button>
     <button onclick="deleteTableRow()" id="removeClassBtn">Remove Classes</button>
     <br><br>
-    <button onclick="confirmDeletion('page2')">Back</button>
+    <button onclick="confirmDeletion('page2a')">Back</button>
     <button onclick="saveClassesDetails()" id="saveClassesBtn">Save Classes</button>
   </div>
 
-  <!--Page 3: user selects position of subjects in week A-->
+  <!--Page 3: user pastes timetable from spaces-->
   <div id='page3' class='pages' style="display: none;">
+    <p>Copy your timetable from the Newington Spaces Timetable tab and paste it here</p>
+    <textarea id="myTextarea" cols="30" rows="10"></textarea>
+    <br><br>
+    <button onclick="confirmDeletion('page3')">Back</button>
+    <button onclick="importClasses()" id="importClassBtn">Import Spaces</button>
+  </div>
+
+  <!--Page 2b: user selects position of subjects in week A-->
+  <div id='page2b' class='pages' style="display: none;">
     <p>This screen is an easy method to enter your timetable</p>
     <div class="flex-container">
       <table id="weekAInputTimetable">
@@ -42,12 +51,12 @@
         <p>Subject List:</p>
       </form>
     </div>
-    <button onclick="goToPage(page2)">Back</button>
+    <button onclick="goToPage(page2a)">Back</button>
     <button onclick="saveManualTimetable('weekAInputTimetable')">Save Week A</button>
   </div>
 
-  <!--Page B: user selects position of subjects in week B-->
-  <div id='pageB' class='pages' style="display: none;">
+  <!--Page 2c: user selects position of subjects in week B-->
+  <div id='page2c' class='pages' style="display: none;">
     <p>This screen is an easy method to enter your timetable</p>
     <div class="flex-container">
       <table id="weekBInputTimetable">
@@ -56,7 +65,7 @@
         <p>Subject List:</p>
       </form>
     </div>
-    <button onclick='goToPage(page3)'>Back</button>
+    <button onclick='goToPage(page2b)'>Back</button>
     <button onclick="saveManualTimetable('weekBInputTimetable')">Save Week B</button>
   </div>
 
@@ -66,15 +75,6 @@
     </table>
     <button onclick="deleteTimetableData()">Return to Start</button>
     <button onclick="saveUpdTimetable('fullEditTimetable')" id="">Save Timetable</button>
-  </div>
-
-  <!--Page A: user pastes timetable from spaces-->
-  <div id='pageA' class='pages' style="display: none;">
-    <p>Copy your timetable from the Newington Spaces Timetable tab and paste it here</p>
-    <textarea id="myTextarea" cols="30" rows="10"></textarea>
-    <br><br>
-    <button onclick="confirmDeletion('pageA')">Back</button>
-    <button onclick="importClasses()" id="importClassBtn">Import Spaces</button>
   </div>
 
   <!--Page 5: user sees countdown and timetable-->
