@@ -4,8 +4,8 @@ function initialise() {
 
   //Used to store a clone of the page before modifications are made
   clonedPages = {
-    page2: document.getElementById("page2").cloneNode(true),
-    pageA: document.getElementById("pageA").cloneNode(true),
+    page2a: document.getElementById("page2a").cloneNode(true),
+    page3: document.getElementById("page3").cloneNode(true),
     page6: document.getElementById("page6").cloneNode(true),
     page7: document.getElementById("page7").cloneNode(true)
   };
@@ -33,7 +33,7 @@ var subjectHeadingsArr = ["Subject Name", "Main Classroom", "Teacher"];
 function makeClasses() {
   //This function creates the table for the user to manually enter their details
   var table = document.getElementById("subjectInputTable");
-  goToPage(page2);
+  goToPage(page2a);
 
   //Makes the 3 table headers ("Subject Name", "Main Classroom", "Teacher")
   var row = table.insertRow(-1);
@@ -116,12 +116,15 @@ function showSelectBoxes(tableName) {
   //Ensuring the heading/first row does not include the checkbox
   var row = table.rows[0];
   var cell = document.createElement("TD");
+  cell.classList.add("checkBox")
   row.insertBefore(cell, row.childNodes[0]);
 
   //Adding checkboxes to the subsequent rows
   for (var i = 1; i < table.rows.length; i++) {
-    row = table.rows[i];
-    cell = document.createElement("TD");
+    var row = table.rows[i];
+    var cell = document.createElement("TD");
+    cell.classList.add("checkBox")
+    
     var checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     cell.appendChild(checkbox);
@@ -171,14 +174,14 @@ function saveClassesDetails() {
     //Saves each row as an object, as an element in a global array
     for (var i = 1; i < table.rows.length; i++) {
       userClassDetailsObj = {
-        subjectName: table.rows[i].cells[0].childNodes[0].value,
-        mainClassroom: table.rows[i].cells[1].childNodes[0].value,
-        teacher: table.rows[i].cells[2].childNodes[0].value
+        subjectName: table.rows[i].cells[0].childNodes[0].value.trim(),
+        mainClassroom: table.rows[i].cells[1].childNodes[0].value.trim(),
+        teacher: table.rows[i].cells[2].childNodes[0].value.trim()
       };
       allClassesDetails.push(userClassDetailsObj);
     }
     //Setting up the displaying of the information on the following page
-    goToPage(page3);
+    goToPage(page2b);
     makeManualTimetableInput("weekAInputTimetable", "A");
 
     //Makes a list of all the user's subjects so the full timetable can be filled out easily
@@ -193,7 +196,7 @@ function findSubjectNameErrors(table) {
   var errorCells = [];
   //Makes array containing all subject names
   for (var i = 1; i < table.rows.length; i++) {
-    allNames.push(table.rows[i].cells[0].childNodes[0].value);
+    allNames.push(table.rows[i].cells[0].childNodes[0].value.trim());
   }
 
   //Looping through allNames to check for errors
@@ -463,7 +466,7 @@ function saveManualTimetable(tableName) {
     //tableHeading = table.rows[0].childNodes[0].innerText; //TODO DELETE LINE
     if (tableName.includes("A")) {
       console.log(weekATimetable); //TODO REMOVE CONSOLE.LOG
-      goToPage(pageB)
+      goToPage(page2c)
       makeManualTimetableInput("weekBInputTimetable", "B");
       makeSubjectList("weekBSubjectList");
     } else {
@@ -688,9 +691,9 @@ function saveUpdTimetable(timetableName) {
         continue;
       } //ignore details in row 19 as it doesn't contain input boxes
       for (var c = 0; c < colsTotal; c++) {
-        var subjectInput = table.rows[r].cells[c].childNodes[0].value;
-        var roomInput = table.rows[r].cells[c].childNodes[1].value;
-        var teacherInput = table.rows[r].cells[c].childNodes[2].value;
+        var subjectInput = table.rows[r].cells[c].childNodes[0].value.trim();
+        var roomInput = table.rows[r].cells[c].childNodes[1].value.trim();
+        var teacherInput = table.rows[r].cells[c].childNodes[2].value.trim();
 
         var daySchedule = tempTimetableArr[week][c].schedule;
         if (periodIndex == 5) {
@@ -715,11 +718,7 @@ function saveUpdTimetable(timetableName) {
             //will remove previous period object value
             daySchedule.splice(periodFoundPos, 1);
           }
-        } else if (
-          subjectInput === "" ||
-          roomInput === "" ||
-          teacherInput === ""
-        ) {
+        } else if (subjectInput === "" || roomInput === "" || teacherInput === "") {
           errorPresent = true;
           //Highlights any error cells
           table.rows[r].cells[c].childNodes[0].style.borderColor = "red";
