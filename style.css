@@ -1,14 +1,292 @@
 body {
-  background-color: white;
-  background-color: #353535;
-  background-color: dimgrey;
+  text-align: center;
+  background-color: #f7f6f0;
+}
+h1 {
+  font-size: 45px;
+  text-align: center;
+  border-bottom: 2px #464646 solid;
+  background-color: black;
+  color: white;
+  font-family: "Titillium Web";
+  padding-bottom: 7px;
+  margin-bottom: 0;
+}
+
+p {
+  margin-bottom: 0;
+  margin-top: 0;
+  font-size: 28px;
+  padding-bottom: 7px;
+  padding-top: 15px;
+  font-weight: bold;
+  color: #464646;
+}
+h3 {
+  font-weight: bold;
+  color: #737373;
+  border: none;
+}
+textarea {
+  width: 800px;
+}
+
+.importButtonPg1,
+.manualButtonPg1 {
+  background-color: #f68b1f;
+  color: white;
+  padding: 5px;
+  font-size: 27px;
+  border-radius: 10px;
+  margin-top: 100px;
+  border: 2px orange solid;
+}
+.pg2a {
+  padding-top: 0;
+  font-size: 23px;
+}
+.importButtonPg1 {
+  margin-left: 100px;
+}
+.manualButtonPg1 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#importClassBtn {
+  float: right;
+  margin-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+button {
+  border-radius: 10px;
+  color: white;
+  background-color: #464646;
+  border: 2px grey solid;
+  font-size: 20px;
+}
+
+.add,
+.remove {
+  background-color: #f68b1f;
+  border: 2px orange solid;
+}
+
+.editBtn,
+.searchBtn {
+  background-color: #f68b1f;
+  border: 2px orange solid;
+  font-size: 25px;
+  margin-left: 20px;
+  margin-right: 20px;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#page2a button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+#saveClassesBtn {
+  float: right;
+  margin-right: 15px;
+}
+
+.back {
+  float: left;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-left: 15px;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.save {
+  float: right;
+  margin-right: 15px;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.deleteBtn {
+  float: center;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#page7 .back {
+  margin-top: 100px;
+}
+
+button:hover {
+  background-color: #1c1b1b;
+}
+
+.orangeBtn:hover {
+  background-color: #db750f;
+}
+td > button {
+  color: #464646;
+  background-color: #f7f6f0;
+  border-radius: 15px;
+  margin: 4px;
+  border: 1.5px solid grey;
+}
+
+td > button:hover {
+  background-color: silver;
+}
+
+#weekAInputTimetable,
+#weekBInputTimetable {
+  margin-bottom: 23px;
+  margin-left: 15px;
+  margin-right: 3vw;
+  table-layout: fixed;
+  width: 80%;
+}
+
+#weekAInputTimetable tr:nth-child(2) th,
+#weekBInputTimetable tr:nth-child(2) th {
+  border-color: #464658;
+}
+
+#weekAInputTimetable tr:nth-child(1) th,
+#weekBInputTimetable tr:nth-child(1) th {
+  border: 0;
+}
+
+#subjectInputTable th {
+  background-color: orange;
+  color: white;
+}
+
+th,
+td {
+  margin: auto;
+  font-size: 20px;
+  border: 2px #f68b1f solid;
+}
+
+table {
+  margin: auto;
 }
 
 .flex-container {
   display: flex;
   flex-direction: row;
 }
+#weekASubjectList p,
+#weekBSubjectList p {
+  font-size: 22px;
+  color: grey;
+  padding-top: 0;
+  margin-bottom: 0;
+}
 
-#subjectList {
-  margin: 0 auto;
+#weekASubjectList input,
+#weekBSubjectList input {
+  margin-left: 1.5vw;
+}
+
+.checkBox {
+  border: 0;
+  padding-right: 8px;
+}
+
+#weekASubjectList,
+#weekBSubjectList {
+  margin-top: 11px;
+  margin-bottom: 21px;
+  vertical-align: top;
+  padding: 1vw;
+  padding-top: 0;
+  text-align: left;
+  border-left: 2px grey solid;
+}
+label {
+  padding-left: 3px;
+  font-size: 18px;
+}
+
+#page2b table tr:nth-child(2),
+#page2c table tr:nth-child(2) {
+  padding: 0 20px;
+  background-color: #464646;
+  color: white;
+}
+
+#fullEditTimetable,
+#updatedTimetable {
+  border-top: 0;
+  border-left: 0;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+#fullEditTimetable h3,
+#updatedTimetable h3 {
+  color: white;
+  background-color: #f68b1f;
+  padding: 6px;
+  border: 4px orange solid;
+  border-top: 0;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  margin-bottom: 0;
+  margin-top: 20px;
+}
+
+#page4 table tr:nth-child(1) {
+  border: 0;
+}
+
+#updatedTimetable {
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+
+#timer {
+  border-top: 4px #464646 solid;
+  border-bottom: 4px #464646 solid;
+  font-size: 35px;
+  color: orange;
+  padding: 10px 0 10px 0;
+}
+
+#page4 table tr:nth-child(2),
+#page6 table tr:nth-child(2) {
+  background-color: #464646;
+  color: white;
+}
+
+#queryResultsTable th {
+  color: white;
+  background-color: orange;
+}
+
+#queryResultsTable {
+  border-radius: 10px;
+}
+
+#page4 table tr:nth-child(20),
+#page6 table tr:nth-child(20) {
+  background-color: #464646;
+  color: white;
+}
+
+#queryResultsTable td,
+#queryResultsTable th {
+  padding: 6px;
 }

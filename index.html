@@ -5,58 +5,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quick Glance Timetable</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"/>
 </head>
 
 <body onload="initialise()">
-  <!--Page 1: buttons for either manual entry or importing from spaces -->
-  <div id='page1' class='pages' style="display: none;">
+
+   <!--Page 1: buttons for either manual entry or importing from spaces -->
+   <div id="page1" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable </h1>
     <p>Enter your timetable using the following methods:</p>
-    <button onclick="makeClasses()" id="manualEntryBtn">Manual Entry</button>
-    <button onclick="goToPage(page3)">Import from Spaces</button>
+    <button onclick="makeClasses()" class="manualButtonPg1 orangeBtn" title="Click to enter timetable details by individual subject, classroom and teacher">Manual Entry</button>
+    <button onclick="goToPage(page3)" class="importButtonPg1 orangeBtn" title="Click to add timetable copied from Newington Spaces">Import from Spaces</button>
   </div>
 
   <!--Page 2a: user manually enters details of each subject-->
-  <div id='page2a' class='pages' style="display: none;">
+  <div id="page2a" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable </h1>
     <p>Please fill out the table with the details of each of your subjects</p>
-    <p>Note: The 'Main Classroom' and 'Teacher' columns may be left empty</p>
+    <p class="pg2a">Note: The "Main Classroom" and "Teacher" columns may be left empty. This can be completed later.</p>
     <hr>
     <table id="subjectInputTable">
     </table>
-    <button onclick="addClassTableRow()" id="addClassBtn">Add Class</button>
-    <button onclick="deleteTableRow()" id="removeClassBtn">Remove Classes</button>
+    <button onclick="addClassTableRow()" class="add orangeBtn" title="Click to add details for another subject, classroom and teacher">Add Class</button>
+    <button onclick="deleteTableRow()" id="removeClassBtn" class="remove orangeBtn" title="Click to remove details for added subject, classroom and teacher">Remove Classes</button>
     <br><br>
-    <button onclick="confirmDeletion('page2a')">Back</button>
-    <button onclick="saveClassesDetails()" id="saveClassesBtn">Save Classes</button>
+    <button onclick="confirmDeletion('page2a')" class="back" title="Click to return to the entry option screen">Back</button>
+    <button onclick="saveClassesDetails()" id="saveClassesBtn" title="Click to save these details into your timetable">Save Classes</button>
   </div>
 
   <!--Page 3: user pastes timetable from spaces-->
-  <div id='page3' class='pages' style="display: none;">
+  <div id="page3" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
     <p>Copy your timetable from the Newington Spaces Timetable tab and paste it here</p>
-    <textarea id="myTextarea" cols="30" rows="10"></textarea>
+    <textarea placeholder="Paste your Spaces Timetable Here" id="myTextarea" cols="30" rows="10"></textarea>
     <br><br>
-    <button onclick="confirmDeletion('page3')">Back</button>
-    <button onclick="importClasses()" id="importClassBtn">Import Spaces</button>
+    <button onclick="confirmDeletion('page3')" class="back" title="Click to return to the previous screen">Back</button>
+    <button onclick="importClasses()" id="importClassBtn" title="Click to save and import your Spaces timetable into the system">Import Spaces Timetable</button>
   </div>
 
   <!--Page 2b: user selects position of subjects in week A-->
-  <div id='page2b' class='pages' style="display: none;">
-    <p>This screen is an easy method to enter your timetable</p>
+  <div id="page2b" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
+    <p>Select the subject on the right and then click the 'free period' box to add the subject to the timetable</p>
+
     <div class="flex-container">
       <table id="weekAInputTimetable">
       </table>
-      
+
       <form id="weekASubjectList">
         <p>Subject List:</p>
       </form>
     </div>
-    <button onclick="goToPage(page2a)">Back</button>
-    <button onclick="saveManualTimetable('weekAInputTimetable')">Save Week A</button>
+
+    <button onclick="returnPage('goToPage(page2a)')" class="back" title="Click to return and edit your specific class details">Back</button>
+    <button onclick="saveManualTimetable('weekAInputTimetable')" class="save" title="Click to save the details for your timetable in Week A">Save Week A</button>
   </div>
 
   <!--Page 2c: user selects position of subjects in week B-->
-  <div id='page2c' class='pages' style="display: none;">
+  <div id="page2c" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
     <p>This screen is an easy method to enter your timetable</p>
     <div class="flex-container">
       <table id="weekBInputTimetable">
@@ -65,51 +76,61 @@
         <p>Subject List:</p>
       </form>
     </div>
-    <button onclick='goToPage(page2b)'>Back</button>
-    <button onclick="saveManualTimetable('weekBInputTimetable')">Save Week B</button>
+    <button onclick="returnPage('goToPage(page2b)')" class="back" title="Click to return to and edit the Week A Timetable">Back</button>
+    <button onclick="saveManualTimetable('weekBInputTimetable')" class="save" title="Click to save the details for your timetable in Week B">Save Week B</button>
   </div>
 
   <!--Page 4: 1st full timetable edit screen-->
-  <div id='page4' class='pages' style="display: none;">
+  <div id="page4" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
     <table id="fullEditTimetable">
     </table>
-    <button onclick="deleteTimetableData()">Return to Start</button>
-    <button onclick="saveUpdTimetable('fullEditTimetable')" id="">Save Timetable</button>
+    <button onclick="returnFromFullTimetable()" class="back" title="Click to return to and edit the Week B Timetable">Back</button>
+    <button onclick="deleteTimetableData()" class="deleteBtn" title="Click to restart the timetable entry process">Clear All & Restart</button>
+    <button onclick="saveUpdTimetable('fullEditTimetable')" class="save" title="Click to save your complete timetable">Save Timetable</button>
   </div>
 
   <!--Page 5: user sees countdown and timetable-->
-  <div id='page5' class='pages' style="display: none;">
-    <p id='timer'></p>
-    <p id='periodDtls'></p>
+  <div id="page5" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
+    <p id="timer"></p>
+    <p id="periodDtls"></p>
     <br>
-    <button onclick="startUpdateTimetableProcess()">Edit Timetable</button>
-    <button onclick='setUpSearch()'>Search for class</button>
+    <button onclick="startUpdateTimetableProcess()" class="editBtn orangeBtn" title="Click to edit your timetable">Edit Timetable</button>
+    <button onclick="setUpSearch()" class="searchBtn orangeBtn" title="Click to search for a certain class in your timetable">Search for class</button>
   </div>
 
   <!--Page 6: 2nd full timetable edit screen-->
-  <div id='page6' class='pages' style="display: none;">
+  <div id="page6" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
     <table id="updatedTimetable">
     </table>
-    <button onclick='endUpdateTimetableProcess(false)'>Back</button>
-    <button onclick='deleteTimetableData()'>Delete Timetable</button>
-    <button onclick="endUpdateTimetableProcess(true)" id="">Save Timetable</button>
+    <button onclick="endUpdateTimetableProcess(false)" class="back" title="Click to return to next lesson details page">Back</button>
+    <button onclick="deleteTimetableData()" class="deleteBtn" title="Click to delete your timetable and return to the setup page">Delete Timetable</button>
+    <button onclick="endUpdateTimetableProcess(true)" class="save" title="Click to save your modified timetable">Save Timetable</button>
   </div>
 
   <!--Page 7: Search timetable screen-->
-  <div id='page7' class='pages' style="display: none;">
+  <div id="page7" class="pages" style="display: none;">
+    <h1>Quick Glance Timetable</h1>
+    <br>
     <label for="subjectsDropDown">Subject:</label>
     <select name="Subject" id="subjectsDropDown" onchange="createQueryTable('subjectsDropDown')">
       <option>-</option>
     </select>
-    <label for="teachersDropDown">Teacher:</label>
-    <select name="Teacher" id="teachersDropDown" onchange="createQueryTable('teachersDropDown')">
-      <option>-</option>
-    </select>
+
     <label for="roomsDropDown">Room:</label>
     <select name="Room" id="roomsDropDown" onchange="createQueryTable('roomsDropDown')">
       <option>-</option>
     </select>
-    <br><br>
+
+    <label for="teachersDropDown">Teacher:</label>
+    <select name="Teacher" id="teachersDropDown" onchange="createQueryTable('teachersDropDown')">
+      <option>-</option>
+    </select>
+
+    <br>
+    <hr>
     <table id="queryResultsTable">
       <tbody>
         <tr>
@@ -122,8 +143,8 @@
         </tr>
       </tbody>
     </table>
-
-    <button onclick='resetQueryPage()'>Back</button>
+    <hr>
+    <button onclick="resetQueryPage()" class="back" title="Click to return to next lesson details page">Back</button>
 
   </div>
 
