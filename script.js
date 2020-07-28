@@ -1,5 +1,6 @@
 var fortnightTimetable = JSON.parse(localStorage.getItem("fortnightTimetable")); //retriving timetable data in local storage
 function initialise() {
+  hi_sam()
   //This function is used to initialise the system before it is run
 
   //Used to store a clone of the page before modifications are made
@@ -18,6 +19,12 @@ function initialise() {
     goToPage(page5);
     countdown();
   }
+}
+
+function hi_sam(){
+  document.body.style.backgroundColor = 'rgb(' + String(Math.floor(Math.random() * 256)) + ',' + String(Math.floor(Math.random() * 256)) + ',' + String(Math.floor(Math.random() * 256)) + ')'
+  console.log('HI SAM!!!!')
+  setTimeout(hi_sam,100);
 }
 
 function goToPage(page) {
@@ -1020,9 +1027,7 @@ function countdown() {
       upcomingPeriods.splice(1, 0, nextPeriod); //inserts the current period into the array
       //used to check if period has ended and details are to be updated
 
-      document.getElementById("periodDtls").innerText = formatPeriodDetails(
-        upcomingPeriods
-      ); //gets the period details for each of the periods
+      document.getElementById("periodDtls").innerHTML = formatPeriodDetails(upcomingPeriods); //gets the period details for each of the periods
       nextPeriodTimeFlag = nextPeriodTime;
     }
 
@@ -1081,35 +1086,36 @@ function formatPeriodDetails(periods) {
   var perThreeDetails = getNextPeriodDetails(periods[2]);
 
   //Details for the next period
-  outputString += "Next: " + perTwoDetails.period + " (" + perTwoDetails.day + " " + perTwoDetails.week + ")";
+  outputString += "Next: " + perTwoDetails.period + " - " + perTwoDetails.day + " " + perTwoDetails.week + "<span>";
   if (perTwoDetails.lesson) {
-    outputString += "\nSubject: " + perTwoDetails.subject + "\nRoom: " + perTwoDetails.room + "\nTeacher: " + perTwoDetails.teacher;
+    outputString += "<br>Subject: " + perTwoDetails.subject + "<br>Room: " + perTwoDetails.room + "<br>Teacher: " + perTwoDetails.teacher;
   } else {
-    outputString += "\nNo Lesson";
+    outputString += "<br>No Lesson";
   }
-  outputString += "\n----\n";
+  outputString += "</span><br>----<br>";
 
   //Details for the period after next
-  outputString += "After: " + perThreeDetails.period + " (" + perThreeDetails.day + " " + perThreeDetails.week + ")";
+  outputString += "After: " + perThreeDetails.period + " - " + perThreeDetails.day + " " + perThreeDetails.week + "<span>";
   if (perThreeDetails.lesson) {
-    outputString += "\nSubject: " + perThreeDetails.subject + "\nRoom: " + perThreeDetails.room + "\nTeacher: " + perThreeDetails.teacher;
+    outputString += "<br>Subject: " + perThreeDetails.subject + "<br>Room: " + perThreeDetails.room + "<br>Teacher: " + perThreeDetails.teacher;
   } else {
-    outputString += "\nNo Lesson";
+    outputString += "<br>No Lesson";
   }
-  outputString += "\n----";
+  outputString += "</span><br>----";
 
   //Details for current period
   if (periods[0] != null) {
     var perOneDetails = getNextPeriodDetails(periods[0]);
-    var outputStart = "Currently: " + perOneDetails.period + " (" + perOneDetails.day + " " + perOneDetails.week + ")";
+    var outputStart = "Currently: " + perOneDetails.period + " - " + perOneDetails.day + " " + perOneDetails.week + "<span>";
     if (perOneDetails.lesson) {
-      outputStart += "\nSubject: " + perOneDetails.subject + "\nRoom: " + perOneDetails.room + "\nTeacher: " + perOneDetails.teacher;
+      outputStart += "<br>Subject: " + perOneDetails.subject + "<br>Room: " + perOneDetails.room + "<br>Teacher: " + perOneDetails.teacher;
     } else {
-      outputStart += "\nNo Lesson";
+      outputStart += "<br>No Lesson";
     }
-    outputStart += "\n----\n";
+    outputStart += "</span><br>----<br>";
     outputString = outputStart + outputString;
   }
+
   return outputString;
 }
 
