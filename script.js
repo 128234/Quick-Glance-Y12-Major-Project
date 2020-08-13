@@ -1421,4 +1421,3 @@ function resetQueryPage() {
   goToPage(page5);
   resetPage("page7");
 }
-
