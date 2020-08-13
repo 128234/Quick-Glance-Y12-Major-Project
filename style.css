@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  background-color: #f7f6f0;
+  background-color: #fffffc;
 }
 h1 {
   font-size: 45px;
@@ -21,6 +21,13 @@ p {
   padding-top: 15px;
   font-weight: bold;
   color: #464646;
+}
+a {
+  color: darkorange;
+  text-decoration: underline;
+}
+a:hover {
+  color: #db750f;
 }
 h3 {
   font-weight: bold;
@@ -258,11 +265,14 @@ label {
 }
 
 #timer {
-  border-top: 4px #464646 solid;
   border-bottom: 4px #464646 solid;
-  font-size: 35px;
+  font-size: 38px;
   color: orange;
   padding: 10px 0 10px 0;
+}
+
+#periodDtls span {
+  font-weight: normal;
 }
 
 #page4 table tr:nth-child(2),
@@ -290,3 +300,4 @@ label {
 #queryResultsTable th {
   padding: 6px;
 }
+

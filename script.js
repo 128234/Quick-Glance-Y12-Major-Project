@@ -1,6 +1,5 @@
-var fortnightTimetable = JSON.parse(localStorage.getItem("fortnightTimetable")); //retriving timetable data in local storage
+var fortnightTimetable = JSON.parse(localStorage.getItem("fortnightTimetable")); //retrieving timetable data in local storage
 function initialise() {
-  hi_sam()
   //This function is used to initialise the system before it is run
 
   //Used to store a clone of the page before modifications are made
@@ -19,12 +18,6 @@ function initialise() {
     goToPage(page5);
     countdown();
   }
-}
-
-function hi_sam(){
-  document.body.style.backgroundColor = 'rgb(' + String(Math.floor(Math.random() * 256)) + ',' + String(Math.floor(Math.random() * 256)) + ',' + String(Math.floor(Math.random() * 256)) + ')'
-  console.log('HI SAM!!!!')
-  setTimeout(hi_sam,100);
 }
 
 function goToPage(page) {
@@ -96,6 +89,7 @@ function addClassTableRow(table) {
   for (var i = 0; i < subjectHeadingsArr.length; i++) {
     var cell = document.createElement("TD");
     var inputElement = document.createElement("input");
+    inputElement.maxLength = 30;
     inputElement.placeholder = subjectHeadingsArr[i];
     cell.appendChild(inputElement);
     row.appendChild(cell);
@@ -198,8 +192,8 @@ function saveClassesDetails() {
   var table = document.getElementById("subjectInputTable");
   var inputErrors = insertionSort(findSubjectNameErrors(table));
   //Checks if error with data before continuing
+  highlightErrorCells(table, inputErrors);
   if (inputErrors.length != 0) {
-    highlightErrorCells(table, inputErrors);
     alert(
       "The highlighted cells contain an error. Please fix these errors before continuing."
     );
@@ -209,9 +203,9 @@ function saveClassesDetails() {
   //Saves each row as an object, as an element in a global array
   for (var i = 1; i < table.rows.length; i++) {
     userClassDetailsObj = {
-      subjectName: table.rows[i].cells[0].childNodes[0].value.trim(),
-      mainClassroom: table.rows[i].cells[1].childNodes[0].value.trim(),
-      teacher: table.rows[i].cells[2].childNodes[0].value.trim()
+      subjectName: table.rows[i].cells[0].childNodes[0].value.trim().replace(/  +/g, ' '),
+      mainClassroom: table.rows[i].cells[1].childNodes[0].value.trim().replace(/  +/g, ' '),
+      teacher: table.rows[i].cells[2].childNodes[0].value.trim().replace(/  +/g, ' ')
     };
     allClassesDetails.push(userClassDetailsObj);
   }
@@ -231,7 +225,7 @@ function findSubjectNameErrors(table) {
   var errorCells = [];
   //Makes array containing all subject names
   for (var i = 1; i < table.rows.length; i++) {
-    allNames.push(table.rows[i].cells[0].childNodes[0].value.trim());
+    allNames.push(table.rows[i].cells[0].childNodes[0].value.trim().replace(/  +/g, ' '));
   }
 
   //Looping through allNames to check for errors
@@ -519,14 +513,11 @@ function saveManualTimetable(tableName) {
     }
 
     //Determines which week of data was entered and what are the next steps
-    //tableHeading = table.rows[0].childNodes[0].innerText; //TODO DELETE LINE
     if (tableName.includes("A")) {
-      console.log(weekATimetable); //TODO REMOVE CONSOLE.LOG
       goToPage(page2c);
       makeManualTimetableInput("weekBInputTimetable", "B");
       makeSubjectList("weekBSubjectList");
     } else {
-      console.log(weekBTimetable); //TODO REMOVE CONSOLE.LOG
       goToPage(page4); //Go to full timetable edit screen
       makeFullTimetableScreen("fullEditTimetable");
     }
@@ -555,7 +546,7 @@ function goToSpacesInput() {
 }
 
 function importClasses() {
-  //This function stores the data from the pasted string from the user's spaces timetable
+  //This function performs string processing and stores the data from the user's spaces timetable
 
   //try-catch is used to isolate errors stemming from the user inputting different strings
   try {
@@ -585,10 +576,6 @@ function importClasses() {
     alert("The data you have entered is not compatible. Please try again");
     return;
   }
-
-  //TODO DELETE CONSOLE LOG
-  console.log(weekATimetable);
-  console.log(weekBTimetable);
 
   fortnightTimetable = [weekATimetable, weekBTimetable];
   goToPage(page4); //Go to full timetable edit screen
@@ -834,7 +821,6 @@ function saveUpdTimetable(timetableName) {
         }
       }
     }
-    console.log(tempTimetableArr); //TODO REMOVE CONSOLE LOG
 
     if (errorPresent) {
       //Return message to the user if an error is present
@@ -1435,3 +1421,4 @@ function resetQueryPage() {
   goToPage(page5);
   resetPage("page7");
 }
+
